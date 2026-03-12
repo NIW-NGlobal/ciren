@@ -2,7 +2,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3000', { transports: ['websocket'] });
+const socket = io('http://192.168.100.10:3000', { transports: ['websocket'] });
 
 function SensorDetail() {
   const { username, sensorID } = useParams();
@@ -15,11 +15,11 @@ function SensorDetail() {
   const [limit, setLimit] = useState(10);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/resolve/${username}`)
+    fetch(`http://192.168.100.10:3000/api/resolve/${username}`)
       .then(res => res.json())
       .then(({ raspi_serial_id }) => {
         setRaspiID(raspi_serial_id);
-        return fetch(`http://localhost:3000/api/data/${raspi_serial_id}`);
+        return fetch(`http://192.168.100.10:3000/api/data/${raspi_serial_id}`);
       })
       .then(res => res.json())
       .then(dataList => {

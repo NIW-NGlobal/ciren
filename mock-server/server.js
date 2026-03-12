@@ -509,7 +509,7 @@ server.listen(PORT, () => {
   console.log('╔══════════════════════════════════════════════════╗');
   console.log('║      CIREN Mock Server v2.0  —  Running          ║');
   console.log('╚══════════════════════════════════════════════════╝');
-  console.log(`  URL  : http://localhost:${PORT}`);
+  console.log(`  URL  : http://192.168.100.10:${PORT}`);
   console.log('');
   console.log('  Demo account (2 Raspberry Pis):');
   console.log('    username        : demo');
@@ -517,8 +517,8 @@ server.listen(PORT, () => {
   console.log(`    raspi #2        : ${RASPI_2_ID}  (${SENSOR_SLOTS_2.length} sensors)`);
   console.log('');
   console.log('  Quick start:');
-  console.log(`    Dashboard       : http://localhost:5173/ciren/demo/dashboard`);
-  console.log(`    Status / debug  : http://localhost:${PORT}/api/status`);
+  console.log(`    Dashboard       : http://192.168.100.10:5173/ciren/demo/dashboard`);
+  console.log(`    Status / debug  : http://192.168.100.10:${PORT}/api/status`);
   console.log('');
   console.log(`  Raspi #1 sensors (1/sec):`);
   SENSOR_SLOTS.forEach(({ port, type }) => console.log(`    Port ${port}  →  ${type}`));
