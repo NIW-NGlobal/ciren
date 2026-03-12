@@ -11,9 +11,9 @@ const { Server } = require('socket.io');
 
 normalizeHubObject = require('./helper').normalizeHubObject;
 
-const HOST = process.env.HOST || '192.168.100.10';
+const HOST = process.env.HOST;
 const PORT      = process.env.PORT       || 3000;
-const MONGO_URI = process.env.MONGO_URI  || 'mongodb://mongodb.nakayamairon.com:27017//iot-monitoring';
+const MONGO_URI = process.env.MONGO_URI  || 'mongodb://mongodb.nakayamairon.com:27017/iot-monitoring';
 const JWT_SECRET = process.env.JWT_SECRET || 'ciren-secret-key';
 
 const app    = express();
