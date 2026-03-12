@@ -324,6 +324,9 @@ app.post('/api/raspi-data', async (req, res) => {
   try {
     const { raspberry_serial_id, datas } = req.body;
 
+    console.log("datas : ",datas);
+    
+
     if (!raspberry_serial_id || !datas || !Array.isArray(datas))
       return res.status(400).json({ error: 'Missing raspberry_serial_id or invalid datas' });
 
