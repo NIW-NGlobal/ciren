@@ -28,7 +28,8 @@ app.use('/api', requireAuth, apiRoutes)
 
 // ─── MongoDB ──────────────────────────────────────
 async function connectMongo() {
-  const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/ciren'
+  // const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/ciren'
+  const uri = process.env.MONGO_URI || 'mongodb://mongodb.nakayamairon.com:27017/ciren'
   await mongoose.connect(uri, {
     serverSelectionTimeoutMS: 10000,
     heartbeatFrequencyMS: 10000,
