@@ -14,10 +14,6 @@ IOT System/sensor_controller_Hardcode_MAC/
 # Deployment secrets
 .cloudflared/
 .claude.zip
-.config
-**/.env
-**/.env.production
-**/.env.local
 
 Caddyfile
 
