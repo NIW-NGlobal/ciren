@@ -15,6 +15,7 @@ const handleStats   = require('./api/stats')
 
 const app  = express()
 const PORT = process.env.PORT || 3000
+const HOST = '192.168.100.10'
 
 // ─── Middleware ───────────────────────────────────
 app.use(cors())
@@ -61,19 +62,19 @@ async function start() {
     initMQTT()
 
     // 4. HTTP server (WebSocket shares same port via server attachment)
-    const server = app.listen(PORT, () => {
-      console.log(`[HTTP] Server running on port ${PORT}`)
-      console.log(`[WS]   WebSocket on port ${PORT} (shared)`)
+    const server = app.listen(PORT, HOST, () => {
+      console.log(`[HTTP] Server running on http://${HOST}:${PORT}`)
+      console.log(`[WS]   WebSocket on ws://${HOST}:${PORT} (shared)`)
       console.log('')
       console.log('API endpoints:')
-      console.log(`  GET  /api/health`)
-      console.log(`  GET  /api/devices`)
-      console.log(`  GET  /api/devices/:id`)
-      console.log(`  GET  /api/devices/:id/nodes`)
-      console.log(`  GET  /api/devices/:id/data`)
-      console.log(`  GET  /api/devices/:id/data/latest`)
-      console.log(`  GET  /api/devices/:id/data/history`)
-      console.log(`  POST /api/devices/:id/config`)
+      console.log(`  GET  http://${HOST}:${PORT}/api/health`)
+      console.log(`  GET  http://${HOST}:${PORT}/api/devices`)
+      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id`)
+      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id/nodes`)
+      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id/data`)
+      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id/data/latest`)
+      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id/data/history`)
+      console.log(`  POST http://${HOST}:${PORT}/api/devices/:id/config`)
     })
 
     // 5. Attach WebSocket ke HTTP server (share port)

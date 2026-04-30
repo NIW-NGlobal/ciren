@@ -58,7 +58,7 @@ frontend/src/
 
 ```bash
 npm install
-npm run dev       # dev server at http://localhost:5173
+npm run dev       # dev server at http://192.168.100.10:5173
 npm run build     # production build → dist/
 npm run preview   # preview production build locally
 ```
