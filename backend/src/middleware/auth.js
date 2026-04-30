@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
+const { loadSharedConfig } = require('../../../config/shared-config')
 
-const JWT_SECRET = process.env.JWT_SECRET || 'ciren-secret-key'
+const { jwtSecret: JWT_SECRET } = loadSharedConfig()
 
 module.exports = function requireAuth(req, res, next) {
   const auth = req.headers.authorization

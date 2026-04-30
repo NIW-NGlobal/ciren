@@ -1,7 +1,9 @@
 const { WebSocketServer } = require('ws')
 const jwt = require('jsonwebtoken')
+const { loadSharedConfig } = require('../../../config/shared-config')
 
-const JWT_SECRET   = process.env.JWT_SECRET || 'ciren-secret-key'
+const config = loadSharedConfig()
+const JWT_SECRET   = config.jwtSecret
 const PING_INTERVAL = 30000  // ping tiap 30s untuk deteksi dead connections
 
 let wss = null
@@ -26,7 +28,7 @@ function initWS(serverOrPort) {
 
   wss.on('connection', (ws, req) => {
     // ── Auth: ambil token dari query string ?token=xxx ──
-    const url    = new URL(req.url, 'ws://localhost')
+    const url    = new URL(req.url, config.backendWsUrl)
     const token  = url.searchParams.get('token')
 
     if (!token) {
@@ -46,8 +48,10 @@ function initWS(serverOrPort) {
     console.log(`[WS] Client connected: ${ws.user?.username}`)
   })
 
-  const portInfo = typeof serverOrPort === 'number' ? serverOrPort : (process.env.PORT || 3000)
-  console.log(`[WS] Server running on port ${portInfo}`)
+  const wsUrl = typeof serverOrPort === 'number'
+    ? `${config.backendWsUrl.replace(/:\d+$/, '')}:${serverOrPort}`
+    : config.backendWsUrl
+  console.log(`[WS] Server running on ${wsUrl}`)
   return wss
 }
 

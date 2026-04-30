@@ -33,7 +33,7 @@ function buildWsUrl() {
   const apiBase = import.meta.env.VITE_API_BASE
   if (apiBase) return apiBase.replace(/^http/, 'ws')
 
-  return 'ws://localhost:3000'
+  return window.location.origin.replace(/^http/, 'ws')
 }
 
 const WS_URL = buildWsUrl()

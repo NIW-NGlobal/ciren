@@ -1,5 +1,6 @@
-const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env'
-require('dotenv').config({ path: require('path').resolve(__dirname, '..', envFile) })
+const { loadSharedConfig } = require('../../config/shared-config')
+
+const config   = loadSharedConfig()
 const express  = require('express')
 const cors     = require('cors')
 const mongoose = require('mongoose')
@@ -14,23 +15,23 @@ const handleStats   = require('./api/stats')
 
 
 const app  = express()
-const PORT = process.env.PORT || 3000
-const HOST = '192.168.100.10'
+const PORT = config.backendPort
+const HOST = config.backendHost
+const API_PREFIX = config.apiPrefix
 
 // ─── Middleware ───────────────────────────────────
 app.use(cors())
 app.use(express.json())
 
 // ─── API Routes ───────────────────────────────────
-app.use('/api/auth', authRoutes)
-app.get('/api/stats', handleStats)           // public — login page stats
-app.use('/api/user', requireAuth, userRoutes)
-app.use('/api', requireAuth, apiRoutes)
+app.use(`${API_PREFIX}/auth`, authRoutes)
+app.get(`${API_PREFIX}/stats`, handleStats)           // public — login page stats
+app.use(`${API_PREFIX}/user`, requireAuth, userRoutes)
+app.use(API_PREFIX, requireAuth, apiRoutes)
 
 // ─── MongoDB ──────────────────────────────────────
 async function connectMongo() {
-  // const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/ciren'
-  const uri = process.env.MONGO_URI || 'mongodb://admin:ciren4171@mongodb.nakayamairon.com:27017/ciren?authSource=admin'
+  const uri = config.mongoUri
   await mongoose.connect(uri, {
     serverSelectionTimeoutMS: 10000,
     heartbeatFrequencyMS: 10000,
@@ -63,18 +64,18 @@ async function start() {
 
     // 4. HTTP server (WebSocket shares same port via server attachment)
     const server = app.listen(PORT, HOST, () => {
-      console.log(`[HTTP] Server running on http://${HOST}:${PORT}`)
-      console.log(`[WS]   WebSocket on ws://${HOST}:${PORT} (shared)`)
+      console.log(`[HTTP] Server running on ${config.backendBaseUrl}`)
+      console.log(`[WS]   WebSocket on ${config.backendWsUrl} (shared)`)
       console.log('')
       console.log('API endpoints:')
-      console.log(`  GET  http://${HOST}:${PORT}/api/health`)
-      console.log(`  GET  http://${HOST}:${PORT}/api/devices`)
-      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id`)
-      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id/nodes`)
-      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id/data`)
-      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id/data/latest`)
-      console.log(`  GET  http://${HOST}:${PORT}/api/devices/:id/data/history`)
-      console.log(`  POST http://${HOST}:${PORT}/api/devices/:id/config`)
+      console.log(`  GET  ${config.backendBaseUrl}${API_PREFIX}/health`)
+      console.log(`  GET  ${config.backendBaseUrl}${API_PREFIX}/devices`)
+      console.log(`  GET  ${config.backendBaseUrl}${API_PREFIX}/devices/:id`)
+      console.log(`  GET  ${config.backendBaseUrl}${API_PREFIX}/devices/:id/nodes`)
+      console.log(`  GET  ${config.backendBaseUrl}${API_PREFIX}/devices/:id/data`)
+      console.log(`  GET  ${config.backendBaseUrl}${API_PREFIX}/devices/:id/data/latest`)
+      console.log(`  GET  ${config.backendBaseUrl}${API_PREFIX}/devices/:id/data/history`)
+      console.log(`  POST ${config.backendBaseUrl}${API_PREFIX}/devices/:id/config`)
     })
 
     // 5. Attach WebSocket ke HTTP server (share port)

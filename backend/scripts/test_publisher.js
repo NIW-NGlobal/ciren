@@ -5,13 +5,13 @@
  * 
  * Berguna untuk test backend sebelum hardware datang
  */
-
-require('dotenv').config()
 const mqtt = require('mqtt')
+const { loadSharedConfig } = require('../../config/shared-config')
 
 const DEVICE_ID = 'MM-001'
-const host      = process.env.MQTT_HOST || 'localhost'
-const port      = process.env.MQTT_PORT || 1883
+const config    = loadSharedConfig()
+const host      = config.mqttHost
+const port      = config.mqttPort
 
 const client = mqtt.connect(`mqtt://${host}:${port}`, {
   clientId: 'ciren-test-publisher',

@@ -1,9 +1,12 @@
 const mqtt   = require('mqtt')
+const { loadSharedConfig } = require('../../../config/shared-config')
 const SensorReading          = require('../models/SensorReading')
 const { SensorNode, Device } = require('../models/Device')
 const NodeConfig             = require('../models/NodeConfig')
 const { broadcast }          = require('../websocket/ws')
 const { FTYPE }              = require('../utils/constants')
+
+const config = loadSharedConfig()
 
 // ─── MQTT Topics ──────────────────────────────────
 // Main module publish ke:
@@ -122,9 +125,9 @@ function _isRateLimited(deviceId) {
 }
 
 function initMQTT() {
-  const host = process.env.MQTT_HOST || 'localhost'
-  const port = process.env.MQTT_PORT || 1883
-  const clientId = process.env.MQTT_CLIENT_ID || 'ciren-backend'
+  const host = config.mqttHost
+  const port = config.mqttPort
+  const clientId = config.mqttClientId
 
   client = mqtt.connect(`mqtt://${host}:${port}`, {
     clientId,
